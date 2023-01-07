@@ -47,7 +47,7 @@ List<String> getLocalStrings({
   required Currency currency,
   required Lang lang,
 }) {
-  final fullPrice = double.parse(price).toStringAsFixed(2);
+  final fullPrice = (double.parse(price) / 4).toStringAsFixed(2);
   if (lang == Lang.ar) {
     if (currency == Currency.egp) {
       return [
