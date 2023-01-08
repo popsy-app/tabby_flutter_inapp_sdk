@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:tabby_flutter_inapp_sdk/tabby_flutter_inapp_sdk.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'fixtures.dart';
 
 class TabbyPresentationSnippet extends StatefulWidget {
-  TabbyPresentationSnippet({
+  const TabbyPresentationSnippet({
     required this.price,
     required this.currency,
     required this.lang,
@@ -20,7 +20,6 @@ class TabbyPresentationSnippet extends StatefulWidget {
   final Color borderColor;
   final Color backgroundColor;
   final Color textColor;
-  final browser = ChromeSafariBrowser();
 
   @override
   State<TabbyPresentationSnippet> createState() =>
@@ -28,22 +27,6 @@ class TabbyPresentationSnippet extends StatefulWidget {
 }
 
 class _TabbyPresentationSnippetState extends State<TabbyPresentationSnippet> {
-  void openWebBrowser() {
-    widget.browser.open(
-      url: Uri.parse(
-        '${snippetWebUrls[widget.lang]}'
-        '?price=${widget.price}&currency=${widget.currency.name}&source=sdk',
-      ),
-      options: ChromeSafariBrowserClassOptions(
-        android: AndroidChromeCustomTabsOptions(
-            shareState: CustomTabsShareState.SHARE_STATE_OFF),
-        ios: IOSSafariOptions(
-          presentationStyle: IOSUIModalPresentationStyle.POPOVER,
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final localStrings = getLocalStrings(
@@ -53,7 +36,13 @@ class _TabbyPresentationSnippetState extends State<TabbyPresentationSnippet> {
     );
 
     return GestureDetector(
-      onTap: openWebBrowser,
+      onTap: () async => launchUrl(
+        Uri.parse(
+          '${snippetWebUrls[widget.lang]}'
+          '?price=${widget.price}&currency=${widget.currency.name}&source=sdk',
+        ),
+        mode: LaunchMode.inAppWebView,
+      ),
       child: Container(
         constraints: const BoxConstraints(minWidth: 300, maxWidth: 720),
         padding: const EdgeInsets.all(16),
