@@ -28,18 +28,6 @@ class TabbyPresentationSnippet extends StatefulWidget {
 }
 
 class _TabbyPresentationSnippetState extends State<TabbyPresentationSnippet> {
-  late List<String> localStrings;
-
-  @override
-  void initState() {
-    localStrings = getLocalStrings(
-      price: widget.price,
-      currency: widget.currency,
-      lang: widget.lang,
-    );
-    super.initState();
-  }
-
   void openWebBrowser() {
     widget.browser.open(
       url: Uri.parse(
@@ -58,6 +46,12 @@ class _TabbyPresentationSnippetState extends State<TabbyPresentationSnippet> {
 
   @override
   Widget build(BuildContext context) {
+    final localStrings = getLocalStrings(
+      price: widget.price,
+      currency: widget.currency,
+      lang: widget.lang,
+    );
+
     return GestureDetector(
       onTap: openWebBrowser,
       child: Container(
